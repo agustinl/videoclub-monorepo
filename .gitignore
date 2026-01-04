@@ -1,0 +1,40 @@
+# ==========================================
+# Monorepo .gitignore
+# ==========================================
+
+# ---- Environment variables ----
+.env
+.env.*
+*.local
+
+# ---- Backend (Python/FastAPI) ----
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+*.pyc
+*.pyo
+*.sql
+
+# ---- Frontend (Node/Vite) ----
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.tanstack/
+frontend/.nitro/
+frontend/.wrangler/
+
+# ---- IDE / OS ----
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db
+
+# ---- Logs ----
+*.log
+npm-debug.log*
+
+# ---- Misc ----
+count.txt
+
