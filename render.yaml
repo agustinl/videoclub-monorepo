@@ -26,10 +26,8 @@ services:
       - key: OMDB_API_KEY
         sync: false
 
-  - type: web
+  - type: static
     name: videoclub-frontend
-    runtime: static
-    plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
