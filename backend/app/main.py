@@ -1,8 +1,14 @@
 from fastapi import FastAPI
-from routes import serie, auth, user
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic_settings import BaseSettings
+from routes import auth, serie, user
+class Settings(BaseSettings):
+    openapi_url: str = "/openapi.json"
 
-app = FastAPI()
+
+settings = Settings()
+
+app = FastAPI(openapi_url=settings.openapi_url)
 
 origins = [
     "http://localhost:3000",

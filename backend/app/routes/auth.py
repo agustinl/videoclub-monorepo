@@ -76,10 +76,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user."
         )
 
-"""
-User creation is disabled for now
-"""
-""" @router.post("/", status_code=status.HTTP_201_CREATED)
+@router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, create_user_request: CreateUserRequest):
     create_user_model = Users(
         username=create_user_request.username,
@@ -87,7 +84,7 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest)
     )
 
     db.add(create_user_model)
-    db.commit() """
+    db.commit()
 
 
 @router.post("/token", response_model=Token)
