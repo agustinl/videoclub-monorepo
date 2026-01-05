@@ -5,8 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173",
-    "https://*.railway.app",
+    "http://localhost:3000",
+    "https://discerning-spirit-production.up.railway.app",
 ]
 
 app.add_middleware(
