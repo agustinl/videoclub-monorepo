@@ -1,48 +1,24 @@
-# Docs: https://render.com/docs/blueprint-spec
-
-databases:
-  - name: videoclub-db
-    plan: free
-    databaseName: videoclub
-    user: videoclub_user
-
 services:
-  - type: web
-    name: videoclub-api
-    runtime: python
-    plan: free
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: videoclub-db
-          property: connectionString
-      - key: SECRET_KEY
-        sync: false
-      - key: ALGORITHM
-        value: HS256
-      - key: OMDB_API_KEY
-        sync: false
+- type: pserv
+  name: mysql
+  plan: standard
+  env: docker
+  autoDeploy: false
+  disk:
+    name: mysql
+    mountPath: /var/lib/mysql
+    sizeGB: 10
+  envVars:
+  - fromGroup: mysql
 
-  - type: web
-    runtime: static
-    name: videoclub-frontend
-    env: static
-    rootDir: frontend
-    plan: free
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    headers:
-      - path: /*
-        name: Cache-Control
-        value: no-cache
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: VITE_BACKEND_URL
-        sync: false
-
+envVarGroups:
+- name: mysql
+  envVars:
+  - key: MYSQL_DATABASE
+    value: mysql
+  - key: MYSQL_USER
+    value: mysql
+  - key: MYSQL_PASSWORD
+    generateValue: true
+  - key: MYSQL_ROOT_PASSWORD
+    generateValue: true
