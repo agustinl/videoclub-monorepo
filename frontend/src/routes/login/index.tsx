@@ -46,13 +46,8 @@ function LoginPage() {
       <div className="relative w-full max-w-sm animate-fade-in">
         <div className="backdrop-blur-xl bg-black/60 border border-white/10 rounded-xl p-6 shadow-2xl shadow-black/50">
           {/* Logo */}
-          <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-[#E50914] to-[#B20710] mb-3 shadow-lg shadow-[#E50914]/30">
-              <Film className="w-6 h-6 text-white" />
-            </div>
-            <h1 className="text-2xl font-bold text-white mb-1 tracking-tight">
-              VideoClub
-            </h1>
+          <div className="text-center mb-6 mx-auto">
+            <img src="/logo-videoclub.png" alt="Logo" className="h-12 mx-auto mb-3" />
             <p className="text-gray-400 text-xs">Sign in to continue</p>
           </div>
 
@@ -77,10 +72,13 @@ function LoginPage() {
           )}
 
           {/* Login form */}
-          <form onSubmit={(e) => {
-            e.preventDefault()
-            loginMutation.mutate()
-          }} className="space-y-4">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              loginMutation.mutate()
+            }}
+            className="space-y-4"
+          >
             {/* Username */}
             <div className="space-y-1.5">
               <label

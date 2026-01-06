@@ -55,8 +55,9 @@ function App() {
           </div>
         )}        
 
+        <section className="max-w-7xl mx-auto">
         {series && series.length > 0 && (
-          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {series.map((serie) => (
               <Link
                 key={serie.imdbID}
@@ -90,6 +91,7 @@ function App() {
             ))}
           </div>
         )}
+        </section>
       </div>
     </div>
   )
