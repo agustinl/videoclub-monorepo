@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic_settings import BaseSettings
-from routes import auth, serie, user
+from routes import auth, serie, user, stats
 class Settings(BaseSettings):
     openapi_url: str = "/openapi.json"
 
@@ -26,3 +26,4 @@ app.add_middleware(
 app.include_router(serie.router)
 app.include_router(auth.router)
 app.include_router(user.router)
+app.include_router(stats.router)

@@ -48,6 +48,13 @@ export default function Header({
           <Link to="/" className="flex items-center gap-2">
             <img src="/logo-videoclub.png" alt="Logo" className="h-8" />
           </Link>
+
+          <Link
+              to="/stats"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-[#E50914] text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
+            >
+              Stats
+            </Link>
         </div>
 
         <div className="flex items-center gap-2">
