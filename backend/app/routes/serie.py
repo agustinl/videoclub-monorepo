@@ -54,6 +54,14 @@ class CreateSerieRequest(BaseModel):
 OMDB_URL = "http://www.omdbapi.com/?type=series&plot=full"
 OMDB_API_KEY = os.getenv("OMDB_API_KEY")
 
+def get_series_titles(db: Session):
+    series_titles = db.query(Serie).options(
+        load_only(Serie.title)
+    ).all()
+
+    series_titles = [serie.title for serie in series_titles]
+    
+    return series_titles
 
 @router.get("/all")
 def get_all_series(db: db_dependency):

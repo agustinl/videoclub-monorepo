@@ -1,5 +1,5 @@
 import { Link, useRouter } from '@tanstack/react-router'
-import { LogIn } from 'lucide-react'
+import { BotIcon, LogIn } from 'lucide-react'
 
 interface HeaderProps {
   title?: string
@@ -50,11 +50,19 @@ export default function Header({
           </Link>
 
           <Link
-              to="/stats"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-[#E50914] text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
-            >
-              Stats
-            </Link>
+            to="/stats"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-[#E50914] text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
+          >
+            Stats
+          </Link>
+
+          <Link
+            to="/assistant"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 border border-white/10"
+          >
+            <BotIcon className="w-4 h-4" />
+            <span className="hidden sm:inline">Assistant</span>
+          </Link>
         </div>
 
         <div className="flex items-center gap-2">

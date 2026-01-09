@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as StatsIndexRouteImport } from './routes/stats/index'
 import { Route as SearchIndexRouteImport } from './routes/search/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as AssistantIndexRouteImport } from './routes/assistant/index'
 import { Route as SeriesImdbIDRouteImport } from './routes/series/$imdbID'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +36,11 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AssistantIndexRoute = AssistantIndexRouteImport.update({
+  id: '/assistant/',
+  path: '/assistant/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SeriesImdbIDRoute = SeriesImdbIDRouteImport.update({
   id: '/series/$imdbID',
   path: '/series/$imdbID',
@@ -44,6 +50,7 @@ const SeriesImdbIDRoute = SeriesImdbIDRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/series/$imdbID': typeof SeriesImdbIDRoute
+  '/assistant': typeof AssistantIndexRoute
   '/login': typeof LoginIndexRoute
   '/search': typeof SearchIndexRoute
   '/stats': typeof StatsIndexRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/series/$imdbID': typeof SeriesImdbIDRoute
+  '/assistant': typeof AssistantIndexRoute
   '/login': typeof LoginIndexRoute
   '/search': typeof SearchIndexRoute
   '/stats': typeof StatsIndexRoute
@@ -59,21 +67,36 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/series/$imdbID': typeof SeriesImdbIDRoute
+  '/assistant/': typeof AssistantIndexRoute
   '/login/': typeof LoginIndexRoute
   '/search/': typeof SearchIndexRoute
   '/stats/': typeof StatsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/series/$imdbID' | '/login' | '/search' | '/stats'
+  fullPaths:
+    | '/'
+    | '/series/$imdbID'
+    | '/assistant'
+    | '/login'
+    | '/search'
+    | '/stats'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/series/$imdbID' | '/login' | '/search' | '/stats'
-  id: '__root__' | '/' | '/series/$imdbID' | '/login/' | '/search/' | '/stats/'
+  to: '/' | '/series/$imdbID' | '/assistant' | '/login' | '/search' | '/stats'
+  id:
+    | '__root__'
+    | '/'
+    | '/series/$imdbID'
+    | '/assistant/'
+    | '/login/'
+    | '/search/'
+    | '/stats/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SeriesImdbIDRoute: typeof SeriesImdbIDRoute
+  AssistantIndexRoute: typeof AssistantIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
   SearchIndexRoute: typeof SearchIndexRoute
   StatsIndexRoute: typeof StatsIndexRoute
@@ -109,6 +132,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/assistant/': {
+      id: '/assistant/'
+      path: '/assistant'
+      fullPath: '/assistant'
+      preLoaderRoute: typeof AssistantIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/series/$imdbID': {
       id: '/series/$imdbID'
       path: '/series/$imdbID'
@@ -122,6 +152,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SeriesImdbIDRoute: SeriesImdbIDRoute,
+  AssistantIndexRoute: AssistantIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   SearchIndexRoute: SearchIndexRoute,
   StatsIndexRoute: StatsIndexRoute,
