@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
+import Markdown from 'react-markdown'
 import { api } from '@/fetchClient'
 
 const isProduction = import.meta.env.PROD
@@ -9,117 +10,19 @@ export const Route = createFileRoute('/assistant/')({
 })
 
 function RouteComponent() {
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-    refetch,
-    isFetching,
-  } = useQuery<string>({
-    queryKey: ['assistant-recommendation'],
-    queryFn: () =>
-      api.get('/assistant/assistant', {
-        Authorization: `Bearer ${localStorage.getItem('videoclub_access_token')}`,
-      }),
-    enabled: false,
-    staleTime: Infinity,
-  })
+  const { data, isLoading, isError, error, refetch, isFetching } =
+    useQuery<string>({
+      queryKey: ['assistant-recommendation'],
+      queryFn: () =>
+        api.get('/assistant/assistant', {
+          Authorization: `Bearer ${localStorage.getItem('videoclub_access_token')}`,
+        }),
+      enabled: false,
+      staleTime: Infinity,
+    })
 
   const handleGetRecommendation = () => {
     refetch()
-  }
-
-  const renderMarkdown = (text: string) => {
-    const lines = text.split('\n')
-    const elements: Array<React.ReactNode> = []
-    let listItems: Array<string> = []
-    let listKey = 0
-
-    const flushList = () => {
-      if (listItems.length > 0) {
-        elements.push(
-          <ul key={`list-${listKey++}`} className="space-y-2 my-4">
-            {listItems.map((item, i) => (
-              <li key={i} className="flex items-start gap-3 text-gray-300">
-                <span className="text-[#E50914] mt-1.5">•</span>
-                <span dangerouslySetInnerHTML={{ __html: formatInline(item) }} />
-              </li>
-            ))}
-          </ul>
-        )
-        listItems = []
-      }
-    }
-
-    const formatInline = (content: string): string => {
-      return content
-        .replace(/\*\*\*(.*?)\*\*\*/g, '<strong class="text-white font-bold italic">$1</strong>')
-        .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em class="text-amber-200/90">$1</em>')
-        .replace(/`(.*?)`/g, '<code class="bg-white/10 px-1.5 py-0.5 rounded text-[#E50914] text-sm">$1</code>')
-    }
-
-    lines.forEach((line, index) => {
-      const trimmedLine = line.trim()
-
-      if (!trimmedLine) {
-        flushList()
-        return
-      }
-
-      // Headers
-      if (trimmedLine.startsWith('## ')) {
-        flushList()
-        elements.push(
-          <h2 key={index} className="text-xl font-bold text-white mt-6 mb-3 border-b border-white/10 pb-2">
-            {trimmedLine.slice(3)}
-          </h2>
-        )
-        return
-      }
-
-      if (trimmedLine.startsWith('# ')) {
-        flushList()
-        elements.push(
-          <h1 key={index} className="text-2xl font-bold text-white mt-4 mb-4">
-            {trimmedLine.slice(2)}
-          </h1>
-        )
-        return
-      }
-
-      // Bold title with **
-      if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**') && !trimmedLine.slice(2, -2).includes('**')) {
-        flushList()
-        const title = trimmedLine.slice(2, -2)
-        elements.push(
-          <h3 key={index} className="text-xl font-bold text-[#E50914] mt-5 mb-2">
-            {title}
-          </h3>
-        )
-        return
-      }
-
-      // List items
-      if (trimmedLine.startsWith('* ') || trimmedLine.startsWith('- ')) {
-        listItems.push(trimmedLine.slice(2))
-        return
-      }
-
-      // Regular paragraph
-      flushList()
-      elements.push(
-        <p
-          key={index}
-          className="text-gray-300 leading-relaxed my-3"
-          dangerouslySetInnerHTML={{ __html: formatInline(trimmedLine) }}
-        />
-      )
-    })
-
-    flushList()
-    return elements
   }
 
   return (
@@ -174,7 +77,12 @@ function RouteComponent() {
                   AI Assistant Unavailable
                 </h3>
                 <p className="text-amber-200/70 text-sm leading-relaxed">
-                  The AI recommendation feature is only available in local development with a configured <code className="bg-amber-500/20 px-1.5 py-0.5 rounded text-amber-300 text-xs">GOOGLE_API_KEY</code> (Gemini API).
+                  The AI recommendation feature is only available in local
+                  development with a configured{' '}
+                  <code className="bg-amber-500/20 px-1.5 py-0.5 rounded text-amber-300 text-xs">
+                    GOOGLE_API_KEY
+                  </code>{' '}
+                  (Gemini API).
                 </p>
               </div>
             </div>
@@ -251,7 +159,9 @@ function RouteComponent() {
               Something went wrong
             </h3>
             <p className="text-gray-400 text-sm mb-4">
-              {error instanceof Error ? error.message : 'Failed to get recommendation'}
+              {error instanceof Error
+                ? error.message
+                : 'Failed to get recommendation'}
             </p>
             <button
               onClick={handleGetRecommendation}
@@ -290,7 +200,76 @@ function RouteComponent() {
 
               {/* Markdown Content */}
               <div className="prose prose-invert max-w-none">
-                {data && renderMarkdown(data)}
+                {data && (
+                  <Markdown
+                    components={{
+                      h1: ({ children }) => (
+                        <h1 className="text-2xl font-bold text-white mt-4 mb-4">
+                          {children}
+                        </h1>
+                      ),
+                      h2: ({ children }) => (
+                        <h2 className="text-xl font-bold text-white mt-6 mb-3 border-b border-white/10 pb-2">
+                          {children}
+                        </h2>
+                      ),
+                      h3: ({ children }) => (
+                        <h3 className="text-lg font-bold text-[#E50914] mt-5 mb-2">
+                          {children}
+                        </h3>
+                      ),
+                      p: ({ children }) => (
+                        <p className="text-gray-300 leading-relaxed my-3">
+                          {children}
+                        </p>
+                      ),
+                      ul: ({ children }) => (
+                        <ul className="space-y-2 my-4">{children}</ul>
+                      ),
+                      ol: ({ children }) => (
+                        <ol className="space-y-2 my-4 list-decimal list-inside">
+                          {children}
+                        </ol>
+                      ),
+                      li: ({ children }) => (
+                        <li className="flex items-start gap-3 text-gray-300">
+                          <span className="text-[#E50914] mt-1.5">•</span>
+                          <span>{children}</span>
+                        </li>
+                      ),
+                      strong: ({ children }) => (
+                        <strong className="text-white font-semibold">
+                          {children}
+                        </strong>
+                      ),
+                      em: ({ children }) => (
+                        <em className="text-amber-200/90">{children}</em>
+                      ),
+                      code: ({ children }) => (
+                        <code className="bg-white/10 px-1.5 py-0.5 rounded text-[#E50914] text-sm">
+                          {children}
+                        </code>
+                      ),
+                      a: ({ href, children }) => (
+                        <a
+                          href={href}
+                          className="text-[#E50914] hover:text-[#f40612] underline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {children}
+                        </a>
+                      ),
+                      blockquote: ({ children }) => (
+                        <blockquote className="border-l-4 border-[#E50914] pl-4 my-4 italic text-gray-400">
+                          {children}
+                        </blockquote>
+                      ),
+                    }}
+                  >
+                    {data}
+                  </Markdown>
+                )}
               </div>
 
               {/* Get Another Button */}
@@ -318,7 +297,6 @@ function RouteComponent() {
             </div>
           </div>
         )}
-
       </div>
     </div>
   )
