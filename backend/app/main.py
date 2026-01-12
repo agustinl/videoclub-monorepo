@@ -1,7 +1,14 @@
+import os
+
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic_settings import BaseSettings
-from routes import auth, serie, user, stats, assistant
+from routes import assistant, auth, serie, stats, user
+
+load_dotenv()
+
+
 class Settings(BaseSettings):
     openapi_url: str = "/openapi.json"
 
@@ -10,10 +17,7 @@ settings = Settings()
 
 app = FastAPI(openapi_url=settings.openapi_url)
 
-origins = [
-    "http://localhost:3000",
-    "https://discerning-spirit-production.up.railway.app",
-]
+origins = [os.getenv("FRONTEND_URL")]
 
 app.add_middleware(
     CORSMiddleware,

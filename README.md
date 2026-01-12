@@ -70,6 +70,8 @@ GEMINI_API_KEY=your-gemini-api-key
 | `OMDB_API_KEY` | Yes | API key from [omdbapi.com](http://www.omdbapi.com/apikey.aspx) |
 | `OPENAPI_URL` | No | OpenAPI schema endpoint path |
 | `GEMINI_API_KEY` | No | Google Gemini API key for AI features |
+| `FRONTEND_URL` | Yes | Frontend allowed origin |
+!
 
 ## Getting Started
 
